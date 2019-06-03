@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Geb Config © 2018 Xmplar.in All right reserved</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+</head>
+
+<body id="style-1">
+    <div class="head" id="navbar">
+        <h2>GEB Config</h2>
+        <div class="nav">
+            <button class="button" id="but2">Build-Config</button>
+            <button class="but1" id="but3">Schedule</button>
+            <button class="button" id="but1">Home</button>
+            <button class="button" id="but4">Runner</button>
+        </div>
+    </div>
+    <div class="container-fluid" id="content">
+        <div class="container" id="container">
+
+            <input type="text" name="Name" id="name" class="inputFiled" placeholder="Name"><br><br>
+            <input type="text" name="" id="email" class="inputFiled" placeholder="Email"><br><br>
+            <input type="password" name="" id="password" class="inputFiled" placeholder="Password"><br><br>
+            <input type="text" name="" id="toSize" class="inputFiled" placeholder="Number of People on TO List"><br><br>
+            <input type="text" name="" id="ccSize" class="inputFiled" placeholder="Number of People on CC List"><br><br>
+            <input type="submit" name="" id="reportPathButton" class="button rpBut" value="Jar's Path"><br><br>
+            <input type="text" name="" id="reportSize" class="inputFiled"
+                placeholder="Number of Reports to be Sent"><br><br>
+            <input type="text" name="" id="jarName" class="inputFiled"
+                placeholder="Name of Jar File Ex: Abc.jar"><br><br>
+            <input type="text" name="" id="testCaseName" class="inputFiled"
+                placeholder="Name of Test file Ex:com.xmplar.dcf...."><br><br>
+            <input type="text" name="" id="taskName" class="inputFiled" placeholder="Name of Scheduled Task"><br><br>
+            <input type="text" name="" id="time" class="inputFiled" placeholder="Scheduled Time Ex: 17:24:11"><br><br>
+            <select id="freq">
+                <option value="">Select Frequency of Execution</option>
+                <option value="ONCE">Once</option>
+                <option value="DAILY">Daily</option>
+            </select>
+            <input type="submit" name="" id="submitButton" class="button" value="Submit">
+
+        </div>
+
+    </div>
+</body>
+<script>
+    // const bcrypt = require('bcrypt');
+    // const saltRounds = 10;
+
+    // Command to Create a scheduled task from command line:schtasks /Create /tn "mytask5" /sc ONCE /st 17:49:00 /tr "C:\Users\Xmplar\Desktop\UnitTestCases.bat"
+    function handleContent(markup) {
+        var container = document.getElementById('container');
+        container.innerHTML = markup;
+    }
+    function handleTerminalContent(markup) {
+        var container = document.getElementById('container');
+        container.insertAdjacentHTML("afterend", markup);
+    }
+    function removeTerminalContent(){
+        var terminal = document.getElementsByClassName('terminal')
+        terminal[0].parentNode.removeChild(terminal[0]);
+    }
+    function handleHomePage() {
+        
+        var markup = `<input type="text" name="Name" id="name" class="inputFiled" placeholder="Name"><br><br>
+            <input type="text" name="" id="email" class="inputFiled" placeholder="Email"><br><br>
+            <input type="password" name="" id="password" class="inputFiled" placeholder="Password"><br><br>
+            <input type="text" name="" id="toSize" class="inputFiled" placeholder="Number of People on TO List"><br><br>
+            <input type="text" name="" id="ccSize" class="inputFiled" placeholder="Number of People on CC List"><br><br>
+            <input type="submit" name="" id="reportPathButton" class="button rpBut" value="Jar's Path"><br><br>
+            <input type="text" name="" id="reportSize" class="inputFiled" placeholder="Number of Reports to be Sent"><br><br>
+            <input type="text" name="" id="jarName" class="inputFiled" placeholder="Name of Jar File Ex: Abc.jar"><br><br>
+            <input type="text" name="" id="testCaseName" class="inputFiled" placeholder="Name of Test file Ex:com.xmplar.dcf...."><br><br>
+            <input type="text" name="" id="taskName" class="inputFiled" placeholder="Name of Scheduled Task"><br><br>
+            <input type="text" name="" id="time" class="inputFiled" placeholder="Scheduled Time Ex: 17:24:11"><br><br>
+            <select id ="freq">
+                <option value="">Select Frequency of Execution</option>
+                <option value="ONCE">Once</option>
+                <option value="DAILY">Daily</option>
+              </select>
+            <input type="submit" name="" id="submitButton" class="button" value="Submit">`;
+        handleContent(markup);
+        removeTerminalContent();
+    }
+
+    function handleRunner() {
+        var markup = `
+            <input type="submit" name="" id="reportPathButton" class="button rpBut" value="Select Workspace"><br><br>
+            <select id ="package" onchange="loadTestClasses()">
+                <option id="packageOptions" value="">Select Package</option>
+              </select>
+              <br><br>
+              <select id ="testclasses">
+                <option  value="">Select Test Classes</option>
+              </select><br><br>
+            <input type="submit" name="" id="runnerButton" class="button" value="Run">
+            <br><br>
+            
+            `;
+        var terminalMarkup = `
+        <div class="terminal">
+            <pre id="terminal-result"><pre>
+        </div>`;
+        handleContent(markup);
+        handleTerminalContent(terminalMarkup);
+    }
+
+    function handleSchedulePage() {
+        
+        var markup = `
+            <input type="submit" name="" id="reportPathButton" class="button rpBut" value="Jar's Path"><br><br>
+            <input type="text" name="" id="jarName" class="inputFiled" placeholder="Name of Jar File Ex: Abc.jar"><br><br>
+            <input type="text" name="" id="testCaseName" class="inputFiled" placeholder="Name of Test file Ex:com.xmplar.dcf...."><br><br>
+            <input type="text" name="" id="taskName" class="inputFiled" placeholder="Name of Scheduled Task"><br><br>
+            <input type="submit" name="" id="configPathButton" class="button rpBut" value="Select Config File"><br><br>
+            <input type="text" name="" id="time" class="inputFiled" placeholder="Scheduled Time Ex: 17:24:11"><br><br>
+            <select id ="freq">
+                <option value="">Select Frequency of Execution</option>
+                <option value="ONCE">Once</option>
+                <option value="DAILY">Daily</option>
+              </select>
+              <br><br>
+            <input type="submit" name="" id="scheduleButton" class="button" value="Submit">
+            
+        `;
+        handleContent(markup);
+        removeTerminalContent();
+    }
+    function handleConfigPage() {
+        var markup = `<input type="text" name="Name" id="name" class="inputFiled" placeholder="Name"><br><br>
+            <input type="text" name="" id="email" class="inputFiled" placeholder="Email"><br><br>
+            <input type="password" name="" id="password" class="inputFiled" placeholder="Password"><br><br>
+            <input type="text" name="" id="toSize" class="inputFiled" placeholder="Number of People on TO List"><br><br>
+            <input type="text" name="" id="ccSize" class="inputFiled" placeholder="Number of People on CC List"><br><br>
+            <input type="text" name="" id="reportSize" class="inputFiled" placeholder="Number of Reports to be Sent"><br><br>
+            <input type="submit" name="" id="submitConfig" class="button" value="Submit">`;
+        handleContent(markup);
+        removeTerminalContent();
+    }
+    function handleClick(event) {
+        console.log(event.target)
+        var element = event.target['id'];
+        if (element == 'but1') {
+            handleHomePage();
+        } else if (element == 'but3') {
+            handleSchedulePage();
+        } else if (element == 'but2') {
+            handleConfigPage();
+        } else if (element == 'but4') {
+            handleRunner();
+        }
+    }
+    ['#but1', '#but2', '#but3', '#but4'].forEach(ev => document.querySelector(ev).addEventListener('click', (event) => {
+        handleClick(event)
+    }));
+    /* document.querySelector('#but1').addEventListener('click',function(event){
+        handleClick(event)
+    });
+    document.querySelector('#but2').addEventListener('click',function(event){
+        handleClick(event)
+    });
+    document.querySelector('#but3').addEventListener('click',function(event){
+        handleClick(event)
+    }); */
+    var fs = require('fs');
+    // Or with ECMAScript 6
+    var app = require('electron').remote;
+    var dialog = app.dialog;
+    // var dialogs = require('dialogs')
+    var fileName = ""
+
+    function extractFileName() {
+
+    }
+
+    function writeToFile(filename, con) {
+        // let con = "\r\nHi there"
+
+        // con = con +"\r\n"
+        fs.writeFile(filename, con, (err) => {
+        });
+
+    }
+
+    var name;
+    var emailAddress;
+    var password;
+    var toSize;
+    var toList = [];
+    var ccSize;
+    var ccList = [];
+    var reportSize;
+    var reportList = [];
+    var dir = "";
+    var taskName;
+    var time;
+    var frequency;
+    var jarName;
+    var testCaseName;
+
+    //   console.log(dir[0]);
+    // let content = "cd C:\\Users\\Xmplar\\eclipse-workspace1\\DcfGebFramework && java -jar AlphaV1.jar \"com.xmplar.dcf.testclasses.ConsolidatedCourtCaseUnitTestCase\" \"D:\\pass.txt\"";
+    // You can obviously give a direct path without use the dialog (C:/Program Files/path/myfileexample.txt)
+    // electron-packager . geb  --platform=win32 --arch=x64 --out=Geb Config --prune=true
+
+    // dir = dir[0]
+    // dir = dir.toString()
+    // dir = dir.replace(/\\/g, '\\\\')
+
+
+    // fileName is a string that contains the path and filename created in the save file dialog.
+
+    var data = function (flagBefore, flagAfter, limit, id) {
+        this.flagBefore = flagBefore;
+        this.flagAfter = flagAfter;
+        this.limit = limit;
+        this.id = id;
+    }
+
+    var ccObject = new data(0, 0, 0, '#ccSize');
+    var toObject = new data(0, 0, 0, '#toSize');
+    var reportObject = new data(0, 0, 0, '#reportSize')
+
+    function emailList(Size, element, Flag, obj) {
+        console.log("ccBefore value :" + obj.flagBefore)
+        for (var i = Size; i > Flag; i--) {
+            if (obj.id != '#reportSize')
+                html = '<span class = " email_%cls%"><br><br><input type="text" name="" class="inputFiled" id="%ID% %id%" placeholder="Email ID %id%"></span>';
+            else
+                html = '<span class = " report_%cls%"><br><br><input type="text" name="" class="inputFiled" id="%ID% %id%" placeholder="Report Name %id%"></span>';
+            html = html.replace('%id%', i)
+            html = html.replace('%id%', i)
+            if (element == '#ccSize') {
+                html = html.replace('%ID%', "CC")
+                html = html.replace('%cls%', "CC")
+
+            }
+            else if (element == '#toSize') {
+                html = html.replace('%ID%', "TO")
+                html = html.replace('%cls%', "TO")
+            } else {
+                html = html.replace('%ID%', "REPORT")
+                html = html.replace('%cls%', "REPORT")
+            }
+
+            if (obj.flagBefore > 0) {
+                if (obj.id == "#ccSize")
+                    var ele = "CC " + obj.flagBefore
+                else if (obj.id == "#toSize")
+                    var ele = "TO " + obj.flagBefore
+                else
+                    var ele = "REPORT " + obj.flagBefore
+                document.getElementById(ele).insertAdjacentHTML('afterend', html);
+            } else
+                document.querySelector(element).insertAdjacentHTML('afterend', html);
+        }
+    }
+    function del(object) {
+        console.log("Flag Before " + object.flagBefore)
+        for (var i = 0; i < object.flagBefore; i++) {
+            if (object.id === '#ccSize')
+                var elem = '.email_CC'
+            else if (object.id === '#toSize')
+                var elem = '.email_TO'
+            else
+                var elem = ".report_REPORT"
+            var elem = document.querySelector(elem)
+
+            elem.parentNode.removeChild(elem);
+        }
+        object.flagBefore = 0
+        object.limit = 0
+        return
+    }
+    function update(object) {
+        if (document.querySelector(object.id).value != '') {
+            var size = parseInt(document.querySelector(object.id).value);
+            if (size > object.flagBefore && object.flagBefore != 0) {
+                object.limit = object.flagBefore
+                emailList(size, object.id, object.limit, object);
+
+                object.flagBefore = object.flagBefore + (size - object.limit)
+            } else {
+                emailList(size, object.id, object.limit, object);
+                object.flagBefore = size
+
+            }
+        }
+    }
+    function ccUpdate(event) {
+        del(ccObject);
+        update(ccObject);
+    }
+    function toUpdate(event) {
+        del(toObject)
+        update(toObject);
+    }
+    function reportUpdate(event) {
+        del(reportObject)
+        update(reportObject);
+    }
+    ['keydown', 'keyup'].forEach(ev => document.addEventListener(ev, (e) => {
+        var target = e.target['id'];
+
+        if (target == 'ccSize') {
+            ccUpdate(e)
+        } else if (target == 'toSize') {
+            toUpdate(e);
+        } else if (target == 'reportSize') {
+            reportUpdate(e);
+        }
+    }))
+    /* document.getElementById('ccSize').addEventListener('keydown', function (event) {
+        ccUpdate(event)
+    }) */
+    /*  document.getElementById('ccSize').addEventListener('keyup', function (event) {
+         ccUpdate(event)
+     }) */
+    /* document.getElementById('toSize').addEventListener('keydown', function (event) {
+        toUpdate(event);
+    }) */
+    /*  document.getElementById('toSize').addEventListener('keyup', function (event) {
+         toUpdate(event);
+     }) */
+    /* document.getElementById('reportSize').addEventListener('keydown', function (event) {
+        reportUpdate(event);
+    }) */
+    /* document.getElementById('reportSize').addEventListener('keyup', function (event) {
+        reportUpdate(event);
+    }) */
+    function getSchedulerValues() {
+        time = document.querySelector('#time').value;
+        var e = document.querySelector("#freq");
+        frequency = e.options[e.selectedIndex].value;
+        jarName = document.querySelector('#jarName').value;
+        testCaseName = document.querySelector('#testCaseName').value;
+        taskName = document.querySelector('#taskName').value;
+    }
+
+    function getConfigValues() {
+        name = document.querySelector('#name').value;
+        emailAddress = document.querySelector('#email').value;;
+        password = document.querySelector('#password').value;
+
+        toSize = document.querySelector('#toSize').value;
+        for (var i = 0; i < toSize; i++) {
+            toList.push(document.getElementById('TO ' + (i + 1)).value);
+        }
+        ccSize = document.querySelector('#ccSize').value;
+        for (var i = 0; i < ccSize; i++) {
+            ccList.push(document.getElementById('CC ' + (i + 1)).value);
+        }
+        reportSize = document.querySelector('#reportSize').value;
+        for (var i = 0; i < reportSize; i++) {
+            reportList.push(document.getElementById('REPORT ' + (i + 1)).value);
+        }
+    }
+    function configBuilder() {
+        var fileName1 = null;
+        fileName = dialog.showSaveDialog({})
+        console.log("Name :" + name)
+        console.log("Email :" + emailAddress)
+        console.log("Password :" + password)
+        console.log("To Email List")
+        for (var i = 0; i < toSize; i++)
+            console.log("Email " + (i + 1) + ":" + toList[i])
+        console.log("CC Email List")
+        for (var i = 0; i < ccSize; i++)
+            console.log("Email " + (i + 1) + ":" + ccList[i])
+        console.log("Report Names List")
+        for (var i = 0; i < reportSize; i++)
+            console.log("Report Name " + (i + 1) + ":" + reportList[i])
+        let space = "\r\n"
+        var cont = name + space + emailAddress + space + password + space + toSize + space
+        fs.truncate(fileName, 0, function () { console.log('done') })
+        for (var i = 0; i < toSize; i++)
+            cont = cont + toList[i] + space
+        cont = cont + ccSize + space
+        // writeToFile(fileName,ccSize);
+        for (var i = 0; i < ccSize; i++)
+            cont = cont + ccList[i] + space
+        // cont = cont + dir + space
+        cont = cont + reportSize + space
+        for (var i = 0; i < reportSize; i++)
+            cont = cont + reportList[i] + space
+        console.log(cont)
+        writeToFile(fileName, cont);
+    }
+
+    /* document.querySelector('#submitConfig').addEventListener('click',function(){
+        getConfigValues();
+        configBuilder();
+        const dialogOptions = { type: 'info', buttons: ['OK', 'Cancel'], message: fileName }
+        dialog.showMessageBox(dialogOptions, i => console.log(i))
+        window.location.reload();
+    }); */
+    function getPackages(dir, filelist) {
+        var path = path || require('path');
+        var fs = fs || require('fs'),
+            files = fs.readdirSync(dir);
+        filelist = filelist || [];
+        files.forEach(function (file) {
+            if (fs.statSync(path.join(dir, file)).isDirectory()) {
+                if (file.includes("testClasses") || file.includes("testclasses")) {
+                    filelist.push(path.join(dir, file));
+                }
+                filelist = getPackages(path.join(dir, file), filelist);
+            }
+            else {
+                // filelist.push(file);
+            }
+        });
+        return filelist;
+    };
+
+    function getTestClasses(dir, filelist) {
+        var path = path || require('path');
+        var fs = fs || require('fs'),
+            files = fs.readdirSync(dir);
+        filelist = filelist || [];
+        var fileMap = new Map();
+        files.forEach(function (file) {
+            if (fs.statSync(path.join(dir, file)).isDirectory()) {
+            }
+            else {
+                if (file.includes(".groovy"))
+                    fileMap.set(file, path.join(dir, file))
+            }
+        });
+        return fileMap;
+    };
+    function loadTestClasses() {
+        var selectedPackagePath = document.getElementById('package').value;
+        if (selectedPackagePath != "") {
+            var testClassOptions = document.getElementById('testclasses');
+            testClassOptions.innerHTML = ""
+            testClassOptions.options[testClassOptions.options.length] = new Option("Select Test Classes", "")
+            var testClassesMap = getTestClasses(selectedPackagePath, "");
+            console.log(testClassesMap);
+            var testClassesNames = Array.from(testClassesMap.keys());
+            testClassesNames.forEach(name => {
+                testClassOptions.options[testClassOptions.options.length] = new Option(name, testClassesMap.get(name));
+            });
+
+        }
+    }
+    document.addEventListener('click', (event) => {
+        // var hash = bcrypt.hashSync(password, saltRounds);
+        var target = event.target['id'];
+        if (target == 'submitButton')
+            submit1();
+        else if (target == 'submitConfig')
+            submit2();
+        else if (target == 'scheduleButton')
+            submit3();
+        else if (target == 'runnerButton')
+            runTestClasses();
+        else if (target == 'reportPathButton') {
+            dir = dialog.showOpenDialog({
+                properties: ['openDirectory']
+            });
+            if (dir != '') {
+                // dir = dir[0].replace(/\\/g, '\\\\') + "\\src\\test\\java"
+                var directory = dir + "\\src\\test\\java"
+                console.log(directory);
+                var packageMap = new Map();
+                packagePaths = getPackages(directory, "");
+                packagePaths.forEach(element => {
+                    var packageName = element.split("java\\")[1].replace(new RegExp("\\\\", 'g'), ".");
+                    packageMap.set(packageName, element);
+                });
+                var packageNames = Array.from(packageMap.keys());
+                var testClassOptions = document.getElementById('testclasses');
+                var packageOptions = document.getElementById('package');
+                packageOptions.innerHTML = ""
+                packageOptions.options[packageOptions.options.length] = new Option("Select Package", "")
+                packageNames.forEach(name => {
+                    if (name.startsWith("com"))
+                        packageOptions.options[packageOptions.options.length] = new Option(name, packageMap.get(name));
+                });
+
+            }
+        }
+        else if (target == 'configPathButton') {
+            dir2 = dialog.showOpenDialog({
+                properties: ['openFile']
+            })
+        }
+    });
+    function runTestClasses() {
+        console.log("reaching");
+        var packageId = document.getElementById('package');
+        var testClassId = document.getElementById('testclasses');
+
+        var packageName = packageId.options[packageId.selectedIndex].text;
+        var testClassName = testClassId.options[testClassId.selectedIndex].text;
+        var absoluteTestClassName = packageName + "." + testClassName;
+        var absoluteTestClassPath = absoluteTestClassName.replace(/\./g, '\\')
+        var classPath1 = dir + "\\src\\test\\java";
+        var classPath2 = dir + "\\src\\main\\java";
+        var classPath3 = dir + "\\src\\test\\resources"
+        absoluteTestClassPath = absoluteTestClassPath.replace("\\groovy", ".groovy")
+        absoluteTestClassName = absoluteTestClassName.split(".groovy")[0]
+        console.log("dir", dir);
+        // groovyc -cp .\com\xmplar\dcf\testclasses\lib\*;"D:\backup\eclipse-workspace\DcfGebFramework\src\test\java"; com\xmplar\dcf\testclasses\ExhibitsTest.groovy
+        var command1 = `pushd ${classPath1}`
+        var command2 = `groovyc -cp .\\com\\xmplar\\dcf\\testclasses\\lib\\*;${classPath1}; ${absoluteTestClassPath}`;
+        var command3 = `java -cp .\\com\\xmplar\\dcf\\testclasses\\lib\\*;${classPath1}";${classPath2}";${classPath3}; org.junit.runner.JUnitCore ${absoluteTestClassName}`
+        console.log(absoluteTestClassPath);
+        console.log(absoluteTestClassName);
+        console.log(command1);
+        console.log(command2);
+        console.log(command3);
+
+        var fileName = dir + "\\Runner\\runner.bat"
+        var content = command1 + "\r\n" + command2 + "\r\n";
+        writeToFile(fileName, content);
+        var resultMarkup = `<p>> Compiling Test Classes.... Status => <span id="status-inprogress">[InProgress]</span></p>`;
+        handleTerminalResult(resultMarkup);
+        const { exec } = require('child_process');
+        exec(fileName, (err, stdout, stderr) => {
+            if (err) {
+                // node couldn't execute the command
+                console.log("error here");
+                console.log(`stdout: ${stdout}`);
+                console.log(`stderr: ${stderr}`);
+                return;
+            } else {
+                console.log(`stdout: ${stdout}`);
+                console.log(`stderr: ${stderr}`);
+                resultMarkup = `<p>> Compilation Complete. Status => <span id="status-success">[SUCCESS]</span></p>`;
+                document.getElementById('status-inprogress').innerText = `[SUCCESS]`;
+                document.getElementById('status-inprogress').id = "status-success";
+                
+                handleTerminalResult(resultMarkup);
+                resultMarkup = `<p>> Please Wait, Executing Test Case. Status => <span id="status-inprogress">[InProgress]</span></p>`;
+                handleTerminalResult(resultMarkup);
+                content = command1 + "\r\n" + command3 + "\r\n";
+                writeToFile(fileName, content);
+                exec(fileName, (err, stdout, stderr) => {
+                    if (err) {
+                        // node couldn't execute the command    
+                        console.log(`stdout: ${stdout}`);
+                        console.log("error here");
+                        return;
+                    } else {
+                        // the *entire* stdout and stderr (buffered)
+                        console.log(`stdout: ${stdout}`);
+                        console.log(`stderr: ${stderr}`);
+                    }
+                });
+            }
+        });
+
+        // const execSync = require('child_process').execSync;
+        // var result1 = execSync(fileName)
+        // window.location.reload();
+
+
+    }
+    function handleTerminalResult(resultMarkup) {
+        var terminalId = document.getElementById('terminal-result');
+        terminalId.insertAdjacentHTML("beforeend", resultMarkup);
+    }
+
+    function submit1() {
+        getSchedulerValues()
+        getConfigValues();
+        configBuilder();
+        var flName = fileName;
+        flName = flName.toString();
+        flName = flName.replace(/\\/g, '\\\\');
+        cont = `pushd ${dir1} && java -jar ${jarName} ${testCaseName} ${flName}`;
+        let arr = fileName.split('\\');
+        arr.splice(arr.length - 1, 1);
+        fileName1 = arr.join('\\');
+        fileName1 += "\\TestCase.bat";
+        writeToFile(fileName1, cont);
+        // window.location.reload();  
+        const dialogOptions = { type: 'info', buttons: ['OK', 'Cancel'], message: cont }
+        const execSync = require('child_process').execSync;
+        //schtasks /Create /tn "mytask5" /sc ONCE /st 17:49:00 /tr "C:\Users\Xmplar\Desktop\UnitTestCases.bat"
+        code = execSync(`schtasks /Create /tn ${taskName.toString()} /sc ${frequency.toString()} /st ${time.toString()} /tr ${fileName1}`);
+        dialog.showMessageBox(dialogOptions, i => console.log(i))
+        window.location.reload();
+    }
+
+    function submit2() {
+        getConfigValues();
+        configBuilder();
+        const dialogOptions = { type: 'info', buttons: ['OK', 'Cancel'], message: fileName }
+        dialog.showMessageBox(dialogOptions, i => console.log(i))
+        window.location.reload();
+    }
+    function submit3() {
+        var fileName1 = null;
+        fileName = dialog.showSaveDialog({})
+        console.log(fileName);
+
+        getSchedulerValues()
+        /* var flName = fileName;
+        flName = flName.toString();
+        flName = flName.replace(/\\/g, '\\\\');
+        cont = `cd ${dir} && java -jar ${jarName} ${testCaseName} ${flName}`;
+        let arr = fileName.split('\\');
+        arr.splice(arr.length -1,1);
+        fileName1 = arr.join('\\');
+        fileName1 += "\\TestCase.bat"; */
+        var flName = dir2;
+        flName = flName.toString();
+        flName = flName.replace(/\\/g, '\\\\');
+        var cont = `pushd ${dir} && java -jar ${jarName} ${testCaseName} ${flName}`;
+        writeToFile(fileName, cont);
+        // window.location.reload();  
+        const dialogOptions = { type: 'info', buttons: ['OK', 'Cancel'], message: cont }
+        const execSync = require('child_process').execSync;
+        //schtasks /Create /tn "mytask5" /sc ONCE /st 17:49:00 /tr "C:\Users\Xmplar\Desktop\UnitTestCases.bat"
+        console.log(`schtasks /Create /tn ${taskName.toString()} /sc ${frequency.toString()} /st ${time.toString()} /tr ${fileName}`);
+
+        code = execSync(`schtasks /Create /tn ${taskName.toString()} /sc ${frequency.toString()} /st ${time.toString()} /tr ${fileName}`);
+        dialog.showMessageBox(dialogOptions, i => console.log(i))
+        window.location.reload();
+    }
+
+    /* document.querySelector('#submitButton').addEventListener('click', function () {
+        // var hash = bcrypt.hashSync(password, saltRounds);
+        submit1();
+    }) */
+
+</script>
+
+</html>
+<!-- 
+Important Commands:
+electron-packager . geb  --platform=win32 --arch=x64 --out=Geb Config icon=D:/backup/Documents/JS_Workspace/Geb/assets/Calendar.ico --prune=true
+Geb>electron-packager . geb  --platform=win32 --arch=x64 --out=Geb Config --prune=truelabels -->
+
+<!-- Runtime.getRuntime().addShutdownHook(new Thread() 
+		    { 
+		      public void run() 
+		      { 
+		    	  try {
+		  			Thread.sleep(5000);
+		  			zipfile();
+		  		SendMail(args[1],status,sub);
+		  		}catch(Exception e) {
+		  			System.out.println("Message"+e.getMessage());
+		  			System.out.println(e.getStackTrace());
+		  			System.out.println("Failed to send the Email");
+		  			System.out.println("Message :"+e.getMessage());
+		  			
+		  		}
+		      } 
+		    }); 
+		
+        System.exit(0); -->
+
+<!-- Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				try {
+					Thread.sleep(5000);
+					zipfile();
+					SendMail(args[1], status, sub);
+				} catch (Exception e) {
+					System.out.println("Message" + e.getMessage());
+					System.out.println(e.getStackTrace());
+					System.out.println("Failed to send the Email");
+					System.out.println("Message :" + e.getMessage());
+
+				}
+			}
+		}); -->

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Geb Config © 2018 Xmplar.in All right reserved</title>
+    <link rel = "stylesheet"
+        type = "text/css"
+        href = "style.css" />
+
+</head>
+
+<body>
+    <div class="head">
+            <h2>GEB Config</h2>
+            <div class="nav">
+                    <button class= "button" id = "but3"><a href="./index1.html">Build-Config</a></button>
+                    <button class= "but1" id= "but2"><a href="./index2.html">Schedule</a></button>
+                    <button class= "button" id = "but1"><a class = "link1" href="./index.html">Home</a></button>
+            </div>
+    </div>
+    <div class="container-fluid">
+        <div class="container">
+
+            <input type="text" name="Name" id="name" class="inputFiled" placeholder="Name"><br><br>
+            <input type="text" name="" id="email" class="inputFiled" placeholder="Email"><br><br>
+            <input type="password" name="" id="password" class="inputFiled" placeholder="Password"><br><br>
+            <input type="text" name="" id="toSize" class="inputFiled" placeholder="Number of People on TO List"><br><br>
+            <input type="text" name="" id="ccSize" class="inputFiled" placeholder="Number of People on CC List"><br><br>
+            <input type="text" name="" id="reportSize" class="inputFiled" placeholder="Number of Reports to be Sent"><br><br>
+            <input type="submit" name="" id="submitConfig" class="button" value="Submit">
+
+        </div>
+    </div>
+</body>
+<script>
+    // const bcrypt = require('bcrypt');
+    // const saltRounds = 10;
+
+    // Command to Create a scheduled task from command line:schtasks /Create /tn "mytask5" /sc ONCE /st 17:49:00 /tr "C:\Users\Xmplar\Desktop\UnitTestCases.bat"
+    function handleClick(event){
+        console.log(event.target)
+        var element = event.target.firstChild;
+        element.click();
+    }
+    document.querySelector('#but1').addEventListener('click',function(event){
+        handleClick(event)
+    });
+    document.querySelector('#but2').addEventListener('click',function(event){
+        handleClick(event)
+    });
+    document.querySelector('#but3').addEventListener('click',function(event){
+        handleClick(event)
+    });
+    var fs = require('fs');
+    // Or with ECMAScript 6
+    var app = require('electron').remote;
+    var dialog = app.dialog;
+    // var dialogs = require('dialogs')
+    var fileName = ""
+
+    function extractFileName() {
+
+    }
+
+    function writeToFile(filename, con) {
+        // let con = "\r\nHi there"
+
+        // con = con +"\r\n"
+        fs.writeFile(filename, con, (err) => {
+        });
+
+    }
+
+    var name;
+    var emailAddress;
+    var password;
+    var toSize;
+    var toList = [];
+    var ccSize;
+    var ccList = [];
+    var reportSize;
+    var reportList = [];
+    var dir = "";
+    var taskName;
+    var time;
+    var frequency;
+    var jarName;
+    var testCaseName;
+
+    var data = function (flagBefore, flagAfter, limit, id) {
+        this.flagBefore = flagBefore;
+        this.flagAfter = flagAfter;
+        this.limit = limit;
+        this.id = id;
+    }
+
+    var ccObject = new data(0, 0, 0, '#ccSize');
+    var toObject = new data(0, 0, 0, '#toSize');
+    var reportObject = new data(0, 0, 0, '#reportSize')
+
+    function emailList(Size, element, Flag, obj) {
+        console.log("ccBefore value :" + obj.flagBefore)
+        for (var i = Size; i > Flag; i--) {
+            if (obj.id != '#reportSize')
+                html = '<span class = " email_%cls%"><br><br><input type="text" name="" class="inputFiled" id="%ID% %id%" placeholder="Email ID %id%"></span>';
+            else
+                html = '<span class = " report_%cls%"><br><br><input type="text" name="" class="inputFiled" id="%ID% %id%" placeholder="Report Name %id%"></span>';
+            html = html.replace('%id%', i)
+            html = html.replace('%id%', i)
+            if (element == '#ccSize') {
+                html = html.replace('%ID%', "CC")
+                html = html.replace('%cls%', "CC")
+
+            }
+            else if (element == '#toSize') {
+                html = html.replace('%ID%', "TO")
+                html = html.replace('%cls%', "TO")
+            } else {
+                html = html.replace('%ID%', "REPORT")
+                html = html.replace('%cls%', "REPORT")
+            }
+
+            if (obj.flagBefore > 0) {
+                if (obj.id == "#ccSize")
+                    var ele = "CC " + obj.flagBefore
+                else if (obj.id == "#toSize")
+                    var ele = "TO " + obj.flagBefore
+                else
+                    var ele = "REPORT " + obj.flagBefore
+                document.getElementById(ele).insertAdjacentHTML('afterend', html);
+            } else
+                document.querySelector(element).insertAdjacentHTML('afterend', html);
+        }
+    }
+    function del(object) {
+        console.log("Flag Before " + object.flagBefore)
+        for (var i = 0; i < object.flagBefore; i++) {
+            if (object.id === '#ccSize')
+                var elem = '.email_CC'
+            else if (object.id === '#toSize')
+                var elem = '.email_TO'
+            else
+                var elem = ".report_REPORT"
+            var elem = document.querySelector(elem)
+
+            elem.parentNode.removeChild(elem);
+        }
+        object.flagBefore = 0
+        object.limit = 0
+        return
+    }
+    function update(object) {
+        if (document.querySelector(object.id).value != '') {
+            var size = parseInt(document.querySelector(object.id).value);
+            if (size > object.flagBefore && object.flagBefore != 0) {
+                object.limit = object.flagBefore
+                emailList(size, object.id, object.limit, object);
+
+                object.flagBefore = object.flagBefore + (size - object.limit)
+            } else {
+                emailList(size, object.id, object.limit, object);
+                object.flagBefore = size
+
+            }
+        }
+    }
+    function ccUpdate(event) {
+        del(ccObject);
+        update(ccObject);
+    }
+    function toUpdate(event) {
+        del(toObject)
+        update(toObject);
+    }
+    function reportUpdate(event) {
+        del(reportObject)
+        update(reportObject);
+    }
+    document.getElementById('ccSize').addEventListener('keydown', function (event) {
+        ccUpdate(event)
+    })
+    document.getElementById('ccSize').addEventListener('keyup', function (event) {
+        ccUpdate(event)
+    })
+    document.getElementById('toSize').addEventListener('keydown', function (event) {
+        toUpdate(event);
+    })
+    document.getElementById('toSize').addEventListener('keyup', function (event) {
+        toUpdate(event);
+    })
+    document.getElementById('reportSize').addEventListener('keydown', function (event) {
+        reportUpdate(event);
+    })
+    document.getElementById('reportSize').addEventListener('keyup', function (event) {
+        reportUpdate(event);
+    })
+    function getSchedulerValues(){
+        time = document.querySelector('#time').value;
+        var e = document.querySelector("#freq");
+        frequency = e.options[e.selectedIndex].value;
+        jarName = document.querySelector('#jarName').value;
+        testCaseName = document.querySelector('#testCaseName').value;
+        taskName = document.querySelector('#taskName').value;
+    }
+    function getConfigValues(){
+        name = document.querySelector('#name').value;
+        emailAddress = document.querySelector('#email').value;;
+        password = document.querySelector('#password').value;
+
+        toSize = document.querySelector('#toSize').value;
+        for (var i = 0; i < toSize; i++) {
+            toList.push(document.getElementById('TO ' + (i + 1)).value);
+        }
+        ccSize = document.querySelector('#ccSize').value;
+        for (var i = 0; i < ccSize; i++) {
+            ccList.push(document.getElementById('CC ' + (i + 1)).value);
+        }
+        reportSize = document.querySelector('#reportSize').value;
+        for (var i = 0; i < reportSize; i++) {
+            reportList.push(document.getElementById('REPORT ' + (i + 1)).value);
+        }
+    }
+    function configBuilder(){
+        var fileName1 = null;
+        fileName = dialog.showSaveDialog({})
+        console.log("Name :" + name)
+        console.log("Email :" + emailAddress)
+        console.log("Password :" + password)
+        console.log("To Email List")
+        for (var i = 0; i < toSize; i++)
+            console.log("Email " + (i + 1) + ":" + toList[i])
+        console.log("CC Email List")
+        for (var i = 0; i < ccSize; i++)
+            console.log("Email " + (i + 1) + ":" + ccList[i])
+        console.log("Report Names List")
+        for (var i = 0; i < reportSize; i++)
+            console.log("Report Name " + (i + 1) + ":" + reportList[i])
+        let space = "\r\n"
+        var cont = name + space + emailAddress + space + password + space + toSize + space
+        fs.truncate(fileName, 0, function () { console.log('done') })
+        for (var i = 0; i < toSize; i++)
+            cont = cont + toList[i] + space
+        cont = cont + ccSize + space
+        // writeToFile(fileName,ccSize);
+        for (var i = 0; i < ccSize; i++)
+            cont = cont + ccList[i] + space
+        cont = cont + reportSize + space
+        for (var i = 0; i < reportSize; i++)
+            cont = cont + reportList[i] + space
+        console.log(cont)
+        writeToFile(fileName, cont);
+    }
+    document.querySelector('#submitConfig').addEventListener('click',function(){
+        getConfigValues();
+        configBuilder();
+        const dialogOptions = { type: 'info', buttons: ['OK', 'Cancel'], message: fileName }
+        dialog.showMessageBox(dialogOptions, i => console.log(i))
+        window.location.reload();
+    });
+   /*  document.querySelector('#submitButton').addEventListener('click', function () {
+        // var hash = bcrypt.hashSync(password, saltRounds);
+        getSchedulerValues()
+        getConfigValues();
+        configBuilder();
+        var flName = fileName;
+        flName = flName.toString();
+        flName = flName.replace(/\\/g, '\\\\');
+        cont = `cd ${dir} && java -jar ${jarName} ${testCaseName} ${flName}`;
+        let arr = fileName.split('\\');
+        arr.splice(arr.length -1,1);
+        fileName1 = arr.join('\\');
+        fileName1 += "\\TestCase.bat";
+        writeToFile(fileName1, cont);   
+        // window.location.reload();  
+        const dialogOptions = { type: 'info', buttons: ['OK', 'Cancel'], message: cont }
+        const execSync = require('child_process').execSync;
+        //schtasks /Create /tn "mytask5" /sc ONCE /st 17:49:00 /tr "C:\Users\Xmplar\Desktop\UnitTestCases.bat"
+        code = execSync(`schtasks /Create /tn ${taskName.toString()} /sc ${frequency.toString()} /st ${time.toString()} /tr ${fileName1}`);
+        dialog.showMessageBox(dialogOptions, i => console.log(i))
+        window.location.reload();
+    }) */
+
+</script>
+
+</html>
+<!-- 
+Important Commands:
+Geb>electron-packager . geb  --platform=win32 --arch=x64 --out=Geb Config --prune=truelabels -->
+
+<!-- Runtime.getRuntime().addShutdownHook(new Thread() 
+		    { 
+		      public void run() 
+		      { 
+		    	  try {
+		  			Thread.sleep(5000);
+		  			zipfile();
+		  		SendMail(args[1],status,sub);
+		  		}catch(Exception e) {
+		  			System.out.println("Message"+e.getMessage());
+		  			System.out.println(e.getStackTrace());
+		  			System.out.println("Failed to send the Email");
+		  			System.out.println("Message :"+e.getMessage());
+		  			
+		  		}
+		      } 
+		    }); 
+		
+        System.exit(0); -->
+        
+        <!-- Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				try {
+					Thread.sleep(5000);
+					zipfile();
+					SendMail(args[1], status, sub);
+				} catch (Exception e) {
+					System.out.println("Message" + e.getMessage());
+					System.out.println(e.getStackTrace());
+					System.out.println("Failed to send the Email");
+					System.out.println("Message :" + e.getMessage());
+
+				}
+			}
+		}); -->

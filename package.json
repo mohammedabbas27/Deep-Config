@@ -1,0 +1,21 @@
+{
+  "name": "Geb-Config",
+  "version": "1.0.0",
+  "description": "An App to create config or properties file and schdule test cases by Abbas",
+  "main": "index.js",
+  "scripts": {
+    "electron": "electron ."
+  },
+  "author": "Mohammed Abbas",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "npm": "^6.7.0"
+  },
+  "devDependencies": {
+    "electron": "^2.0.9",
+    "electron-packager": "^12.1.2",
+    "electron-rebuild": "^1.8.2",
+    "electron-winstaller": "^2.7.0"
+  }
+}

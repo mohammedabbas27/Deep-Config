@@ -1,0 +1,1 @@
+cd C:\Users\Xmplar\eclipse-workspace1\DcfGebFramework && java -jar AlphaV1.jar "com.xmplar.dcf.testclasses.ConsolidatedCourtCaseUnitTestCase" "D:\pass.txt"

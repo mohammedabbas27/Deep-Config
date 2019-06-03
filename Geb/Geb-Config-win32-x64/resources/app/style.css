@@ -1,0 +1,130 @@
+body {
+    background-image: url('./wallpaper.jpg');
+    background-size: cover;
+     background-repeat: no-repeat;
+    height: 800px;  
+}
+.head{
+width: 110%;
+background-color:#03142c;
+padding-top: 25px;
+padding-bottom: 25px;
+/* margin-left: -10px;  */
+margin-top: -10px;
+margin-right: 10px;
+}
+h2{
+color: white;
+/* float: left; */
+font-style: italic;
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif, Tahoma, Geneva, Verdana, sans-serif;
+width: 120px;
+margin: 0 auto;
+padding-right: 140px;
+/* margin-bottom: 150px; */
+}
+
+#but1,#but2,#but3{
+width: 100px;
+border: none;
+color: aliceblue;
+border-radius: 5px;
+height: 40px;
+margin-left: 15px;
+float: right;
+margin-top: -24px;
+outline: none;
+background-color:#2a3f5c;
+
+}
+#but1:hover{
+    border: 2px solid rgb(133, 219, 245);
+}
+#but2:hover{
+    border: 2px solid rgb(133, 219, 245);
+}
+#but3:hover{
+    border: 2px solid rgb(133, 219, 245);
+}
+/* #but1{
+margin-left: 10px; 
+}
+#but2{
+margin-right: 2px;
+}
+.but1:hover{
+border: 1px solid white;
+} */
+.nav{
+margin-right: 90px;
+}   
+/* img{
+float: left;
+margin-top: -10px;
+} */
+.container {
+width: 400px;
+margin: 0 auto;
+padding-top: 25px;
+}
+
+input {
+padding-left: 10px;
+border-radius: 5px;
+width: 250px;
+margin-left: 50px;
+margin-right: 50px;
+height: 22px;
+border-top: none;
+border-right: none;
+border-left: none;
+border-color: black;
+box-shadow: none;
+outline: none;
+}
+select{
+padding-left: 10px;
+border-radius: 5px;
+width: 260px;
+margin-left: 50px;
+margin-right: 50px;
+height: 22px;
+border-top: none;
+border-right: none;
+border-left: none;
+border-color: black;
+box-shadow: none;
+outline: none;
+}
+
+input:focus {
+border-color: orange;
+
+}
+
+.button {
+width: 120px;
+margin-left: 115px;
+background-color: teal;
+border: none;
+color: aliceblue;
+border-radius: 5px;
+height: 30px;
+
+}
+
+.rpBut {
+margin-left: 50px;
+width: 260px;
+padding-left: 10px;
+}
+
+#submitButton{
+margin-top: 10px;
+}
+a{
+text-decoration: none;
+color: white;
+font-style: italic;
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif, Tahoma, Geneva, Verdana, sans-serif;
+}
