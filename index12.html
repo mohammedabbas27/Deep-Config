@@ -1,0 +1,665 @@
+<!--
+Copyright 2017 Tilman Ginzel, AOE GmbH
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <style>
+        #mainContainer {
+            font-family: Helvetica, Arial, sans-serif;
+            width: 800px;
+            padding-top: 3px;
+            margin: auto;
+            margin-top: 20px;
+            font-size: 14px;
+            font-family: Helvetica;
+            background: rgb(53, 60, 70);
+            border-radius: 6px;
+        }
+
+        #style-1::-webkit-scrollbar-track {
+            -webkit-box-shadow: #03142c;
+            border-radius: 10px;
+            background-color: #F5F5F5;
+        }
+
+        #style-1::-webkit-scrollbar {
+            width: 12px;
+            height: 14px;
+            border-radius: 10px;
+            background-color: #F5F5F5;
+        }
+
+        #style-1::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: #03142c;
+            background-color: #2a3f5c;
+        }
+
+        html {
+            background-image: url(http://blog.hostbaby.com/wp-content/uploads/2013/07/scuffedstatic_blue_1920x1234.jpg);
+        }
+
+        /* by default, hide all table rows */
+        .filtered-table tbody tr {
+            display: none;
+        }
+
+        /* let's also hide the radio buttons */
+        .table-filter {
+            display: none
+        }
+
+        /* label for the radio button which will apply the filter */
+        .table-filter+label {
+            display: inline-block;
+            cursor: pointer;
+            color: white;
+            padding: 5px;
+            margin: 2px;
+            font-size: 12px;
+            border: 1px solid lightblue;
+            opacity: 0.7;
+        }
+
+        /* increase the opacity of the label if it is checked */
+        .table-filter:checked+label {
+            opacity: 1.0;
+        }
+
+        /* if a radio button is :checked, display the relevant table row */
+        #show-failed.table-filter:checked~table tbody tr.show-FAILED,
+        #show-pass.table-filter:checked~table tbody tr.show-PASS,
+        #show-all.table-filter:checked~table tbody tr {
+            display: table-row;
+        }
+
+        /* just a text label, not required */
+        .filter-label {
+            font-size: 12px;
+            color: white;
+            margin-left: 18px;
+        }
+
+
+        body {
+            font-family: Helvetica;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        table {
+            margin: 5px;
+        }
+
+        p.date-test-ran {
+            font-size: small;
+            font-style: italic;
+        }
+
+        /* table.summary-table {
+    width: 800px;
+    text-align: left;
+    font-weight: bold;
+    font-size: small;
+}
+
+table.summary-table th {
+    background: lightblue;
+    padding: 6px;
+}
+
+table.summary-table td {
+    background: #E0E0E0;
+    padding: 6px;
+} */
+        table.summary-table {
+            width: 780px;
+            text-align: left;
+            font-weight: bold;
+            font-size: small;
+            border-radius: 6px;
+            margin-right: 10px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        table.summary-table th {
+            background: #c0d8e8;
+            padding: 6px;
+            border-radius: 16px;
+            border: 2px solid #171a21;
+            text-align: center;
+            font-style: italic;
+        }
+
+        table.summary-table td {
+            background: #5b6777;
+            padding: 6px;
+            border-radius: 16px;
+            border: 2px solid #313a38;
+            border: 2px solid #353c46;
+            color: #fdfdfd;
+            text-align: center;
+            font-style: italic;
+        }
+
+        hr {
+            border-color: #72a9ce;
+            border-radius: 7px;
+            height: 1px;
+            background-color: #36a2eb;
+        }
+
+        h1 {
+            font-weight: 300;
+            margin: 24px 0px 8px 0px;
+            font-size: 32px;
+            word-wrap: break-word;
+        }
+
+        h2 {
+            margin-top: 12px;
+            margin-left: 10px;
+            margin-right: 10px;
+            font-size: 22px;
+            font-weight: 300;
+            font-style: italic;
+            border-radius: 6px;
+            text-align: center;
+            color: #fafafa;
+
+        }
+
+        h3 {
+
+            font-size: 22px;
+            font-weight: 300;
+            font-style: italic;
+            margin-top: 24px;
+            margin-bottom: 4px;
+            color: white;
+            margin-left: 14px;
+        }
+
+        p.date-test-ran {
+            font-size: small;
+            font-style: italic;
+            color: white;
+            margin-left: 14px;
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: white;
+        }
+
+        /* tr.error td, td.error {
+    background-color: #F89A4F !important;
+} */
+
+        /* td.failure{
+        background-color: #F89A4F
+    } */
+
+        /* tr.failure td, td.failure {
+    color: red;
+} */
+        td#status.failure {
+            color: red !important;
+        }
+
+        #wrapper1,
+        #wrapper2 {
+            width: 225px;
+            height: 225px;
+        }
+
+        div#wrapper3 {
+            width: 250px;
+            height: 200px;
+            /* padding-top: 10px; */
+            margin-bottom: 50px;
+        }
+
+        .wrapper {
+            float: left;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        #chart3 {
+            height: 250px;
+            width: 250px;
+        }
+
+        /* div.footer {
+    text-align: center;
+    font-size: small;
+} */
+        div.footer {
+            /* margin: 24px 0px 24px 0px; */
+            /* padding-top: 24px; */
+            /* border-top: 1px solid #DDDDDD; */
+            text-align: center;
+            font-size: 13px;
+            margin-top: 10px;
+            padding-bottom: 10px;
+            color: white;
+        }
+
+        #chartContainer {
+            width: 780px;
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        window.addEventListener("load", function () {
+            var a = document.querySelectorAll('#reportName');
+            for (var j = 0; j < a.length; j++) {
+                var reportName = a[j].innerText;
+                var arr = [];
+                var arr1 = [];
+                for (var i = 0; i < reportName.length; i++) {
+                    if (reportName[i] == reportName[i].toUpperCase())
+                        arr.push(i)
+                }
+                for (var i = 0; i < arr.length; i++) {
+                    arr1.push(reportName.slice(arr[i], arr[i + 1]))
+                }
+                reportName = arr1.join(" ");
+                a[j].innerText = reportName;
+
+                var x = document.querySelectorAll('#status')
+                for (var i = 0; i < x.length; i++) {
+                    if (x[i].parentElement.className == " failure show-FAILED")
+                        x[i].style.color = "#ffa802";
+                }
+            }
+        });
+        window.onload = function () {
+            var passCount = document.getElementById('p').value;
+            var failCount = document.getElementById('f').value;
+            // var errorCount = document.getElementById('e').value;
+            new Chart(document.getElementById("pie-chart"), {
+                type: 'pie',
+                data: {
+                    labels: ["Pass", "Failure"],
+                    datasets: [{
+                        label: "Population (millions)",
+                        backgroundColor: ["#00e396", "#ff4560"],
+                        data: [passCount, failCount],
+                        borderColor: '#000000',
+                    }]
+                },
+                options: {
+                    title: {
+                        display: false,
+                        text: 'Chart 1',
+                        fontColor: 'white'
+                    },
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontColor: 'white'
+                        }
+                    },
+                }
+            });
+
+            new Chart(document.getElementById("doughnut-chart"), {
+                type: 'doughnut',
+                data: {
+                    labels: ["Pass", "Failure"],
+                    datasets: [{
+                        label: "Population (millions)",
+                        backgroundColor: ["#008ffb", "#ff6384"],
+                        data: [passCount, failCount],
+                        borderColor: '#000000'
+                    }]
+                },
+                options: {
+                    title: {
+                        display: false,
+                        text: 'Chart 2',
+                        fontColor: 'white'
+                    },
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontColor: 'white'
+                        }
+                    }
+
+                }
+            });
+
+
+        }
+
+    </script>
+
+</head>
+
+<body id="style-1">
+    <div id="mainContainer">
+        
+
+        <h2>Summary Report</h2>
+        <hr>
+        <div class="summary-report">
+            <h3>Summary:</h3>
+
+            <p class="date-test-ran">Created on Thu Jun 06 16:17:26 IST 2019 by Abbas</p>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Total</th>
+                        <th>Passed</th>
+                        <th>Failed</th>
+                        <!-- <th>Errors</th> -->
+                        <th>Success rate</th>
+                        <th>Total time</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>23</td>
+                        <td>0</td>
+                        <td class="failure">23</td>
+                        <!-- <td class="error">6</td> -->
+                        
+                        <td class="failure">0%</td>
+                        <td>1 hours, 13 minutes, 34.993 seconds</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" id="p" value="0">
+        <input type="hidden" id="f" value="23">
+        <!-- <input type="hidden" id="e" value="6"> -->
+        <input type="hidden" id="perc" value="0">
+        <div id="chartContainer">
+            <div class="wrapper" id="wrapper1">
+                <canvas id="pie-chart" style="width:225px;height:225px;"></canvas>
+            </div>
+            <div class="wrapper" id="wrapper2">
+                <canvas id="doughnut-chart" style="width:225px;height:225px;"></canvas>
+            </div>
+            <div class="wrapper" id="wrapper3">
+                <div id="chart3"></div>
+            </div>
+        </div>
+        <script>
+            var successPercentage = document.getElementById('perc').value;
+            var options = {
+                chart: {
+                    height: 300,
+                    width: 300,
+                    type: 'radialBar',
+                },
+                plotOptions: {
+                    radialBar: {
+                        startAngle: -135,
+                        endAngle: 135,
+                        dataLabels: {
+                            name: {
+                                fontSize: '13px',
+                                color: '#ffffff',
+                                offsetY: 80
+                            },
+                            value: {
+                                offsetY: 46,
+                                fontSize: '13px',
+                                color: '#ffffff',
+                                formatter: function (val) {
+                                    return val + "%";
+                                }
+                            }
+                        }
+                    }
+                },
+                fill: {
+                    //   colors:'#f31456',
+                    gradient: {
+                        enabled: true,
+                        shade: 'dark',
+                        shadeIntensity: 0.15,
+                        inverseColors: false,
+
+                        opacityFrom: 1,
+                        opacityTo: 1,
+                        stops: [0, 50, 65, 99]
+                    },
+                },
+                stroke: {
+                    dashArray: 4
+                },
+                series: [successPercentage],
+                labels: ['Success Rate'],
+
+            }
+
+            var chart = new ApexCharts(
+                document.querySelector("#chart3"),
+                options
+            );
+
+            chart.render();
+        </script>
+
+        <h3>Specifications</h3>
+        <span class="filter-label">Filter table:</span>
+        <input type="radio" class="table-filter" name="filter-group" id="show-all" checked />
+        <label for="show-all">ALL</label>
+
+        <input type="radio" class="table-filter" name="filter-group" id="show-failed" />
+        <label for="show-failed">FAILED</label>
+
+        <input type="radio" class="table-filter" name="filter-group" id="show-pass" />
+        <label for="show-pass">PASS</label>
+        <table class="summary-table filtered-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Time</th>
+                    <th>Final Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.ContractsUnitTestCase.html">ContractsUnitTestCase</a></td>
+                    <td>3 minutes, 54.031 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.CourtDateTest.html">CourtDateTest</a></td>
+                    <td>4 minutes, 9.962 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.ExhibitsTest.html">ExhibitsTest</a></td>
+                    <td>14.986 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.fcr.testClasses.AddressTest.html">AddressTest</a></td>
+                    <td>1 minutes, 19.126 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.fcr.testClasses.BrcTest.html">BrcTest</a></td>
+                    <td>1 minutes, 4.809 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.fcr.testClasses.CommunicationTest.html">CommunicationTest</a></td>
+                    <td>1 minutes, 13.386 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class="error failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.EditCourtCaseTest.html">EditCourtCaseTest</a></td>
+                    <td>3 minutes, 7.494 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class="error  show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.WitnessesTest.html">WitnessesTest</a></td>
+                    <td>0.798 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.RelatedCourtCaseTest.html">RelatedCourtCaseTest</a></td>
+                    <td>41.722 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.AppellateIssuesTest.html">AppellateIssuesTest</a></td>
+                    <td>16.895 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class="error failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.ContractsTestCase.html">ContractsTestCase</a></td>
+                    <td>2 minutes, 21.427 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.AppealDetailTest.html">AppealDetailTest</a></td>
+                    <td>27.493 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.ExhibitPresentInCourtForPersonTest.html">ExhibitPresentInCourtForPersonTest</a></td>
+                    <td>1 minutes, 42.657 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.fcr.testClasses.LanguageTest.html">LanguageTest</a></td>
+                    <td>1 minutes, 13.016 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.ThirtyADetailsTest.html">ThirtyADetailsTest</a></td>
+                    <td>10 minutes, 3.339 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.ConsolidatedCourtCaseUnitTestCase.html">ConsolidatedCourtCaseUnitTestCase</a></td>
+                    <td>25.444 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class="error failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.WorkflowTestCase.html">WorkflowTestCase</a></td>
+                    <td>4 minutes, 31.948 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.fcr.testClasses.VolunteerAreaAssociationTest.html">VolunteerAreaAssociationTest</a></td>
+                    <td>3 minutes, 51.856 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.PleadingDocumentsTest.html">PleadingDocumentsTest</a></td>
+                    <td>19 minutes, 16.607 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.OtherExhibitTest.html">OtherExhibitTest</a></td>
+                    <td>7 minutes, 48.387 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class=" failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.ConsultationsTest.html">ConsultationsTest</a></td>
+                    <td>29.031 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class="error failure show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.ConsultationsUnitTest.html">ConsultationsUnitTest</a></td>
+                    <td>37.702 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+                <tr class="error  show-FAILED">
+                    
+                    <td><a id="reportName" href="com.xmplar.dcf.testclasses.CourtCaseSearchTestCase.html">CourtCaseSearchTestCase</a></td>
+                    <td>4 minutes, 42.877 seconds</td>
+                    <td id="status">FAILED</td>
+                </tr>
+                
+            </tbody>
+        </table>
+
+        <hr>
+        <div class="footer">
+            Generated by <a href="https://github.com/renatoathaydes/spock-reports">Athaydes Spock Reports</a>.
+            Modifications by Xmplar Geb-Team.
+        </div>
+    </div>
+</body>
+
+</html>

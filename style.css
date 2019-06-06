@@ -25,7 +25,7 @@ padding-right: 140px;
 /* margin-bottom: 150px; */
 }
 
-#but2,#but3{
+#but2,#but3,#but5{
 width: 100px;
 border: none;
 color: aliceblue;
@@ -62,7 +62,7 @@ background-color:#2a3f5c;
 #but3:hover{
     border: 2px solid rgb(133, 219, 245);
 }
-#but4:hover{
+#but4:hover,#but5:hover{
     border: 2px solid rgb(133, 219, 245);
 }
 /* #but1{
@@ -148,20 +148,20 @@ font-style: italic;
 font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif, Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#style-1::-webkit-scrollbar-track,.terminal::-webkit-scrollbar-track {
+#style-1::-webkit-scrollbar-track,.terminal::-webkit-scrollbar-track,body::-webkit-scrollbar-track {
 	-webkit-box-shadow: #03142c;
 	border-radius: 10px;
 	background-color: #F5F5F5;
 }
 
-#style-1::-webkit-scrollbar,.terminal::-webkit-scrollbar {
+#style-1::-webkit-scrollbar,.terminal::-webkit-scrollbar,body::-webkit-scrollbar {
 	width: 12px;
     height: 14px;
     border-radius: 10px;
 	background-color: #F5F5F5;
 }
 
-#style-1::-webkit-scrollbar-thumb,.terminal::-webkit-scrollbar-thumb {
+#style-1::-webkit-scrollbar-thumb,.terminal::-webkit-scrollbar-thumb,#mainContainer::-webkit-scrollbar-thumb {
 	border-radius: 10px;
 	-webkit-box-shadow: #03142c;
 	background-color: #2a3f5c;

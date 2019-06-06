@@ -14,8 +14,9 @@
     <div class="head" id="navbar">
         <h2>GEB Config</h2>
         <div class="nav">
-            <button class="button" id="but2">Build-Config</button>
+            <button class="button" id="but2">Build-Config </button>
             <button class="but1" id="but3">Schedule</button>
+            <button class="button" id="but5">Reports </button>
             <button class="button" id="but1">Home</button>
             <button class="button" id="but4">Runner</button>
         </div>
@@ -53,6 +54,7 @@
     // const saltRounds = 10;
 
     // Command to Create a scheduled task from command line:schtasks /Create /tn "mytask5" /sc ONCE /st 17:49:00 /tr "C:\Users\Xmplar\Desktop\UnitTestCases.bat"
+    var activePage = "";
     function handleContent(markup) {
         var container = document.getElementById('container');
         container.innerHTML = markup;
@@ -61,12 +63,35 @@
         var container = document.getElementById('container');
         container.insertAdjacentHTML("afterend", markup);
     }
-    function removeTerminalContent(){
+    function removeTerminalContent() {
         var terminal = document.getElementsByClassName('terminal')
         terminal[0].parentNode.removeChild(terminal[0]);
     }
+    function handleReportContent(markup) {
+        document.getElementById('content').innerHTML = markup;
+        // var content = document.getElementById('content').insertAdjacentHTML("beforeend", markup);
+    }
+    function handleReports() {
+        var markup = `<iframe src="index12.html" style="border-style: none;width: 100%; height: 655px;"></iframe>`;
+        handleReportContent(markup);
+        console.log("loading dome");
+
+    }
+    function removeReportContent() {
+        document.getElementById('content').innerHTML = "";
+        var markup = `<div class="container" id="container"></div>`;
+        document.getElementById('content').innerHTML = markup;
+    }
+
+    function cleanUp() {
+        console.log(activePage);
+        if (activePage == 'Runner')
+            removeTerminalContent();
+        else if (activePage == 'Report')
+            removeReportContent();
+    }
     function handleHomePage() {
-        
+
         var markup = `<input type="text" name="Name" id="name" class="inputFiled" placeholder="Name"><br><br>
             <input type="text" name="" id="email" class="inputFiled" placeholder="Email"><br><br>
             <input type="password" name="" id="password" class="inputFiled" placeholder="Password"><br><br>
@@ -85,7 +110,6 @@
               </select>
             <input type="submit" name="" id="submitButton" class="button" value="Submit">`;
         handleContent(markup);
-        removeTerminalContent();
     }
 
     function handleRunner() {
@@ -111,7 +135,7 @@
     }
 
     function handleSchedulePage() {
-        
+
         var markup = `
             <input type="submit" name="" id="reportPathButton" class="button rpBut" value="Jar's Path"><br><br>
             <input type="text" name="" id="jarName" class="inputFiled" placeholder="Name of Jar File Ex: Abc.jar"><br><br>
@@ -129,7 +153,6 @@
             
         `;
         handleContent(markup);
-        removeTerminalContent();
     }
     function handleConfigPage() {
         var markup = `<input type="text" name="Name" id="name" class="inputFiled" placeholder="Name"><br><br>
@@ -140,24 +163,76 @@
             <input type="text" name="" id="reportSize" class="inputFiled" placeholder="Number of Reports to be Sent"><br><br>
             <input type="submit" name="" id="submitConfig" class="button" value="Submit">`;
         handleContent(markup);
-        removeTerminalContent();
+    }
+    function modifyReportPaths() {
+        var midPath = dir[0].replace(/\\/g, '/');
+        var iframe = document.getElementsByTagName("iframe")[0]
+        var paths = iframe.contentWindow.document.getElementsByTagName('a')
+
+        for (var i = 0; i < paths.length - 1; i++) {
+            var newPath = "file:///" + midPath + '/src/test/java/target/geb-spock-reports/'
+            var oldPath = paths[i].href
+            oldPath = oldPath.split('/')
+            oldPath = oldPath[oldPath.length - 1]
+            newPath = newPath + oldPath
+
+            paths[i].href = newPath
+        }
+        var iframe = document.getElementsByTagName("iframe")[0];
+        iframe.contentWindow.document.addEventListener('click', (event) => {
+            console.log(event.target)
+            setTimeout(function () { handleIframeClick(event); }, 1000);
+        });
     }
     function handleClick(event) {
         console.log(event.target)
         var element = event.target['id'];
         if (element == 'but1') {
+            cleanUp();
             handleHomePage();
+            activePage = "Home";
         } else if (element == 'but3') {
+            cleanUp();
             handleSchedulePage();
+            activePage = "Schedule";
         } else if (element == 'but2') {
+            cleanUp();
             handleConfigPage();
+            activePage = "Build";
         } else if (element == 'but4') {
+            cleanUp();
             handleRunner();
+            activePage = "Runner";
+        } else if (element == 'but5') {
+            cleanUp();
+            handleReports();
+            activePage = "Report";
+            setTimeout(function () { modifyReportPaths(); }, 1000);
+
         }
     }
-    ['#but1', '#but2', '#but3', '#but4'].forEach(ev => document.querySelector(ev).addEventListener('click', (event) => {
+    ['#but1', '#but2', '#but3', '#but4', '#but5'].forEach(ev => document.querySelector(ev).addEventListener('click', (event) => {
         handleClick(event)
     }));
+    function handleIframeClick(event) {
+        var element = event.target['id'];
+        var midPath = event.target.href.replace(/\./g, '/');
+        midPath = midPath.replace('/html', '/');
+        var element = event.target['id'];
+        if (element == 'reportName') {
+            var iframe = document.getElementsByTagName("iframe")[0]
+            var paths = iframe.contentWindow.document.getElementsByTagName('a');
+            for (var i = 0; i < paths.length - 1; i++) {
+                var newPath = midPath + '/';
+                var oldPath = paths[i].href
+                oldPath = oldPath.split('/')
+                oldPath = oldPath[oldPath.length - 1]
+                newPath = newPath + oldPath
+                paths[i].href = newPath
+            }
+
+        }
+    }
     /* document.querySelector('#but1').addEventListener('click',function(event){
         handleClick(event)
     });
@@ -536,7 +611,7 @@
                 resultMarkup = `<p>> Compilation Complete. Status => <span id="status-success">[SUCCESS]</span></p>`;
                 document.getElementById('status-inprogress').innerText = `[SUCCESS]`;
                 document.getElementById('status-inprogress').id = "status-success";
-                
+
                 handleTerminalResult(resultMarkup);
                 resultMarkup = `<p>> Please Wait, Executing Test Case. Status => <span id="status-inprogress">[InProgress]</span></p>`;
                 handleTerminalResult(resultMarkup);
