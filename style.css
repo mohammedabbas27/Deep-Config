@@ -183,8 +183,16 @@ font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif, Tahoma
 #terminal-result #status-success{
     color: rgb(116, 243, 116);
 }
-#status-inprogress{
+#status-inprogress,.status-inprogress{
     color: orange;
+}
+
+#status-failure{
+    color: #ff8d8d;
+}
+
+p{
+    font-size: 15px;
 }
 
 @media screen and (max-width: 600px) {

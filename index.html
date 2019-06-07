@@ -55,6 +55,9 @@
 
     // Command to Create a scheduled task from command line:schtasks /Create /tn "mytask5" /sc ONCE /st 17:49:00 /tr "C:\Users\Xmplar\Desktop\UnitTestCases.bat"
     var activePage = "";
+    var runnerActiveMarkup = "";
+    var runnerActive = false;
+
     function handleContent(markup) {
         var container = document.getElementById('container');
         container.innerHTML = markup;
@@ -64,8 +67,12 @@
         container.insertAdjacentHTML("afterend", markup);
     }
     function removeTerminalContent() {
-        var terminal = document.getElementsByClassName('terminal')
-        terminal[0].parentNode.removeChild(terminal[0]);
+        if (activePage == 'Runner' && runnerActive) {
+            document.getElementsByClassName('terminal')[0].style.display = 'none';
+        } else {
+            var terminal = document.getElementsByClassName('terminal')
+            terminal[0].parentNode.removeChild(terminal[0]);
+        }
     }
     function handleReportContent(markup) {
         document.getElementById('content').innerHTML = markup;
@@ -75,7 +82,6 @@
         var markup = `<iframe src="index12.html" style="border-style: none;width: 100%; height: 655px;"></iframe>`;
         handleReportContent(markup);
         console.log("loading dome");
-
     }
     function removeReportContent() {
         document.getElementById('content').innerHTML = "";
@@ -84,7 +90,9 @@
     }
 
     function cleanUp() {
-        console.log(activePage);
+        // if (runnerActive && activePage == 'Runner') {
+        //     runnerActiveMarkup = document.getElementById('content').innerHTML
+        // }
         if (activePage == 'Runner')
             removeTerminalContent();
         else if (activePage == 'Report')
@@ -113,6 +121,11 @@
     }
 
     function handleRunner() {
+        // if (runnerActive) {
+        //     console.log('inside the runner runner active');
+
+        //     handleReportContent(runnerActiveMarkup);
+        // } else {
         var markup = `
             <input type="submit" name="" id="reportPathButton" class="button rpBut" value="Select Workspace"><br><br>
             <select id ="package" onchange="loadTestClasses()">
@@ -126,12 +139,18 @@
             <br><br>
             
             `;
-        var terminalMarkup = `
-        <div class="terminal">
-            <pre id="terminal-result"><pre>
-        </div>`;
         handleContent(markup);
-        handleTerminalContent(terminalMarkup);
+        if (runnerActive) {
+            document.getElementsByClassName('terminal')[0].style.display = 'block';
+        } else {
+            var terminalMarkup = `
+                <div class="terminal">
+                    <pre id="terminal-result"><pre>
+                </div>`;
+            handleTerminalContent(terminalMarkup);
+        }
+
+        // }
     }
 
     function handleSchedulePage() {
@@ -568,6 +587,7 @@
         }
     });
     function runTestClasses() {
+        runnerActive = true
         console.log("reaching");
         var packageId = document.getElementById('package');
         var testClassId = document.getElementById('testclasses');
@@ -613,20 +633,28 @@
                 document.getElementById('status-inprogress').id = "status-success";
 
                 handleTerminalResult(resultMarkup);
-                resultMarkup = `<p>> Please Wait, Executing Test Case. Status => <span id="status-inprogress">[InProgress]</span></p>`;
+                resultMarkup = `<p>> Please Wait, Executing Test Case <span style="color:rgba(238, 254, 101, 1)">${testClassName.split('.')[0]}</span>. Status => <span class="status-inprogress" id="${testClassName.split('.')[0]}">[InProgress]</span></p>`;
                 handleTerminalResult(resultMarkup);
                 content = command1 + "\r\n" + command3 + "\r\n";
                 writeToFile(fileName, content);
                 exec(fileName, (err, stdout, stderr) => {
                     if (err) {
-                        // node couldn't execute the command    
+                        // node couldn't execute the command
+                        var a = stdout
+                        console.log(`stdout: ${stdout}`);
+                        a = a.match(/org.junit.runner.JUnitCore [A-Z a-z . \n\s]*JUnit/g, a)[0].split(' ')[1].split('.')
+                        a = a[a.length - 1]
+                        document.getElementById(`${a}`).className = '';
+                        document.getElementById(`${a}`).innerText = `[FAILURE]`;
+                        document.getElementById(`${a}`).id = "status-failure";
+
                         console.log(`stdout: ${stdout}`);
                         console.log("error here");
                         return;
                     } else {
                         // the *entire* stdout and stderr (buffered)
-                        console.log(`stdout: ${stdout}`);
-                        console.log(`stderr: ${stderr}`);
+                        console.log(`stdout: ${stdout}`); +
+                            console.log(`stderr: ${stderr}`);
                     }
                 });
             }
