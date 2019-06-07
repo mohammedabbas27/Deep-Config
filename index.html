@@ -75,7 +75,9 @@
         }
     }
     function handleReportContent(markup) {
-        document.getElementById('content').innerHTML = markup;
+        var container = document.getElementById('container')
+        container.parentNode.removeChild(container);
+        document.getElementById('content').insertAdjacentHTML("beforeend",markup);
         // var content = document.getElementById('content').insertAdjacentHTML("beforeend", markup);
     }
     function handleReports() {
