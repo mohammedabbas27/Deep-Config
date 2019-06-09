@@ -68,6 +68,7 @@
     }
     function removeTerminalContent() {
         if (activePage == 'Runner' && runnerActive) {
+            console.log('hiding terminal')
             document.getElementsByClassName('terminal')[0].style.display = 'none';
         } else {
             var terminal = document.getElementsByClassName('terminal')
@@ -86,9 +87,13 @@
         console.log("loading dome");
     }
     function removeReportContent() {
-        document.getElementById('content').innerHTML = "";
+        var iframe = document.getElementsByTagName('iframe')[0]
+        iframe.parentNode.removeChild(iframe);
+
+        // document.getElementById('content').innerHTML = "";
+
         var markup = `<div class="container" id="container"></div>`;
-        document.getElementById('content').innerHTML = markup;
+        document.getElementById('content').insertAdjacentHTML("afterbegin",markup);
     }
 
     function cleanUp() {
@@ -658,6 +663,14 @@
                         return;
                     } else {
                         // the *entire* stdout and stderr (buffered)
+                        var a = stdout
+                        console.log(`stdout: ${stdout}`);
+                        a = a.match(/org.junit.runner.JUnitCore [A-Z a-z . \n\s]*JUnit/g, a)[0].split(' ')[1].split('.')
+                        a = a[a.length - 1]
+                        document.getElementById(`${a}`).className = '';
+                        document.getElementById(`${a}`).innerText = `[SUCCESS]`;
+                        document.getElementById(`${a}`).id = "status-success";
+
                         console.log(`stdout: ${stdout}`); +
                             console.log(`stderr: ${stderr}`);
                     }
