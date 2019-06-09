@@ -15,7 +15,9 @@ const setupEvents = require('./installers/setupEvents')
 const {app, BrowserWindow} = require('electron')
 
 function createWindow () {
-    window = new BrowserWindow({width: 900, height: 760,resizable: false,title: "Abbas",frame:true})
+    window = new BrowserWindow({webPreferences: {
+        nodeIntegration: true
+      },width: 900, height: 760,resizable: false,title: "Abbas",frame:true})
     // window.loadFile('index.html')
     /* var pyshell =  require('python-shell');
 pyshell.run('engine.py',  function  (err, results)  {

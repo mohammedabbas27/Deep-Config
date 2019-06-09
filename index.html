@@ -77,7 +77,7 @@
     function handleReportContent(markup) {
         var container = document.getElementById('container')
         container.parentNode.removeChild(container);
-        document.getElementById('content').insertAdjacentHTML("beforeend",markup);
+        document.getElementById('content').insertAdjacentHTML("beforeend", markup);
         // var content = document.getElementById('content').insertAdjacentHTML("beforeend", markup);
     }
     function handleReports() {
@@ -278,7 +278,8 @@
         // let con = "\r\nHi there"
 
         // con = con +"\r\n"
-        fs.writeFile(filename, con, (err) => {
+        fs.writeFileSync(filename, con, (err) => {
+            console.log("done");
         });
 
     }
@@ -473,7 +474,7 @@
             console.log("Report Name " + (i + 1) + ":" + reportList[i])
         let space = "\r\n"
         var cont = name + space + emailAddress + space + password + space + toSize + space
-        fs.truncate(fileName, 0, function () { console.log('done') })
+        // fs.truncateSync(fileName, 0, function () { console.log('done') })
         for (var i = 0; i < toSize; i++)
             cont = cont + toList[i] + space
         cont = cont + ccSize + space
@@ -484,7 +485,6 @@
         cont = cont + reportSize + space
         for (var i = 0; i < reportSize; i++)
             cont = cont + reportList[i] + space
-        console.log(cont)
         writeToFile(fileName, cont);
     }
 
@@ -548,8 +548,10 @@
     document.addEventListener('click', (event) => {
         // var hash = bcrypt.hashSync(password, saltRounds);
         var target = event.target['id'];
-        if (target == 'submitButton')
+        if (target == 'submitButton') {
             submit1();
+            return;
+        }
         else if (target == 'submitConfig')
             submit2();
         else if (target == 'scheduleButton')
@@ -560,7 +562,8 @@
             dir = dialog.showOpenDialog({
                 properties: ['openDirectory']
             });
-            if (dir != '') {
+
+            if (dir != '' && activePage == 'Runner') {
                 // dir = dir[0].replace(/\\/g, '\\\\') + "\\src\\test\\java"
                 var directory = dir + "\\src\\test\\java"
                 console.log(directory);
@@ -674,25 +677,41 @@
     }
 
     function submit1() {
+        var nodeConsole = require('console');
+        var myConsole = new nodeConsole.Console(process.stdout, process.stderr);
+        myConsole.log('Hello World!');
+
         getSchedulerValues()
         getConfigValues();
         configBuilder();
         var flName = fileName;
         flName = flName.toString();
         flName = flName.replace(/\\/g, '\\\\');
-        cont = `pushd ${dir1} && java -jar ${jarName} ${testCaseName} ${flName}`;
+        var cont = `pushd ${dir} && java -jar ${jarName} ${testCaseName} ${flName}`;
         let arr = fileName.split('\\');
         arr.splice(arr.length - 1, 1);
-        fileName1 = arr.join('\\');
-        fileName1 += "\\TestCase.bat";
+        var fileName1 = arr.join('\\');
+        fileName1 += "\\TestCaseData.bat";
+        console.log(fileName1)
+        console.log(cont);
+
         writeToFile(fileName1, cont);
-        // window.location.reload();  
+        console.log(`schtasks /Create /tn ${taskName.toString()} /sc ${frequency.toString()} /st ${time.toString()} /tr ${fileName1}`);
         const dialogOptions = { type: 'info', buttons: ['OK', 'Cancel'], message: cont }
         const execSync = require('child_process').execSync;
         //schtasks /Create /tn "mytask5" /sc ONCE /st 17:49:00 /tr "C:\Users\Xmplar\Desktop\UnitTestCases.bat"
-        code = execSync(`schtasks /Create /tn ${taskName.toString()} /sc ${frequency.toString()} /st ${time.toString()} /tr ${fileName1}`);
-        dialog.showMessageBox(dialogOptions, i => console.log(i))
-        window.location.reload();
+        // const { exec } = require('child_process');
+        try {
+            code = execSync(`schtasks /Create /tn ${taskName.toString()} /sc ${frequency.toString()} /st ${time.toString()} /tr ${fileName1}`);
+        }
+        catch (error) {
+            console.error(error);
+            // expected output: ReferenceError: nonExistentFunction is not defined
+            // Note - error messages will vary depending on browser
+        }
+        myConsole.log('Done Scheduling');
+        // dialog.showMessageBox(dialogOptions, i => console.log(i))
+        // window.location.reload();
     }
 
     function submit2() {
@@ -720,6 +739,8 @@
         flName = flName.toString();
         flName = flName.replace(/\\/g, '\\\\');
         var cont = `pushd ${dir} && java -jar ${jarName} ${testCaseName} ${flName}`;
+        console.log(fileName);
+
         writeToFile(fileName, cont);
         // window.location.reload();  
         const dialogOptions = { type: 'info', buttons: ['OK', 'Cancel'], message: cont }
@@ -729,7 +750,7 @@
 
         code = execSync(`schtasks /Create /tn ${taskName.toString()} /sc ${frequency.toString()} /st ${time.toString()} /tr ${fileName}`);
         dialog.showMessageBox(dialogOptions, i => console.log(i))
-        window.location.reload();
+        // window.location.reload();
     }
 
     /* document.querySelector('#submitButton').addEventListener('click', function () {
