@@ -16,14 +16,14 @@ directory looking for reports.
 <h2> Features</h2>
 <ul>
 <li> Ability to build config/properties file from the user interface</li>
-<li> Ability to run test cases right from the UI with out having to open eclipse IDE</li>
+<li> Ability to run test cases right from the UI without having to open eclipse IDE</li>
 <li> Keeps a version of Unit/Function test cases reports each time its spawn</li>
 <li> Inbuilt Modern Terminal to show the status of the testcase ran </li>
 <li> Ability to run the test cases paralelly without having to wait for other test case to finish </li>
 <li> Dynamic update of the result on to the inbuild terminal </li>
 <li> Ability to indivisually build config/property file </li>
 <li> Ability to schedule the test cases using the build file </li>
-<li> Ability to buil and schedule the test cases at the SAME TIME </li>
+<li> Ability to build and schedule the test cases at the SAME TIME </li>
 <li> Ability to view the reports within the UI without having to open the navigate the reports directory and open indivisual reports</li>
 </ul>
 <br>
