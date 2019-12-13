@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "fs": "0.0.1-security",
-    "npm": "^6.9.0"
+    "npm": "^6.13.4"
   },
   "devDependencies": {
     "electron": "^5.0.3",
