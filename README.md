@@ -34,4 +34,3 @@ directory looking for reports.
 ![alt text](https://github.com/mohammedabbas27/Project-Deep/blob/master/screenshots/Runner%20Section.JPG)
 ![alt text](https://github.com/mohammedabbas27/Project-Deep/blob/master/screenshots/Schedule%20Section.JPG)
 <br>
-<small>© 2019 Mohammed Abbas.  All rights reserved.</small>
